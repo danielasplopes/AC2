@@ -1,0 +1,21 @@
+#include <detpic32.h>
+
+void delay(int ms);
+
+void main(void){
+	LATDbits.LATD0 = 0;			// the initial value should be set before 
+								// configuring the port as output
+	TRISDbits.TRISD0 = 0;		// RD0 configured as output
+	while(1){
+		delay(500);				// half period = 0.5s
+		LATDbits.LATD0 = !LATDbits.LATD0;
+	}
+}
+
+void delay(int ms){
+	for(; ms > 0; ms--){
+		resetCoreTimer();
+		while(readCoreTimer() < PBCLK/1000);	// PBCLK = 20 000 000 logo 
+												// PBCLK/1000 para dar 20 000
+	}
+}
